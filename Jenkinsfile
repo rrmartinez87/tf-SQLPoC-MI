@@ -5,7 +5,7 @@ pipeline {
             steps {
                 sh '''
                    az login -u 'rafael.martinez@globant.com' -p '880917La@'
-                   az account set -s a7b78be8-6f3c-4faf-a43d-285ac7e92a05
+                   az account set -s a265068d-a38b-40a9-8c88-fb7158ccda23
                    '''
             }
         }
