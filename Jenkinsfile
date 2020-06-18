@@ -29,14 +29,14 @@ pipeline {
         stage('creating the KeyVault') {
             steps {
                 sh '''
-                   az keyvault create -n sqlmitfstatekv-test-05 -g sqlTerraform-RG-MI2 -l eastus
+                   az keyvault create -n sqlmitfstatekv-test-06 -g sqlTerraform-RG-MI2 -l eastus
                    '''
             }
         }
         stage('Creating a SAS Token for the storage account, storing in KeyVault') {
             steps {
                 sh '''
-                   az storage container generate-sas --account-name sqlmitfstatestgtestpoc --expiry 2021-04-04 --name sqlmitfstatepoc --permissions dlrw --output json | xargs az keyvault secret set --vault-name sqlmitfstatekv-test-05 --name TerraformSASToken --value
+                   az storage container generate-sas --account-name sqlmitfstatestgtestpoc --expiry 2021-04-04 --name sqlmitfstatepoc --permissions dlrw --output json | xargs az keyvault secret set --vault-name sqlmitfstatekv-test-06 --name TerraformSASToken --value
                    '''
             }
         }
@@ -51,10 +51,10 @@ pipeline {
             steps {
                 sh '''
                    SP=$(az ad sp create-for-rbac -n "SqlMiTerraformSP2")
-                   az keyvault secret set --vault-name sqlmitfstatekv-test-05 --name LinuxSSHPubKey -f ~/.ssh/id_rsa_terraform.pub > /dev/null
-                   az keyvault secret set --vault-name sqlmitfstatekv-test-05 --name spn-id --value $(echo $SP | jq -r '.appId') > /dev/null
-                   az keyvault secret set --vault-name sqlmitfstatekv-test-05 --name spn-secret --value $(echo $SP | jq -r '.password') > /dev/null
-                   az keyvault secret set --vault-name sqlmitfstatekv-test-05 --name spn-tenant --value $(echo $SP | jq -r '.tenant') > /dev/null
+                   az keyvault secret set --vault-name sqlmitfstatekv-test-06 --name LinuxSSHPubKey -f ~/.ssh/id_rsa_terraform.pub > /dev/null
+                   az keyvault secret set --vault-name sqlmitfstatekv-test-06 --name spn-id --value $(echo $SP | jq -r '.appId') > /dev/null
+                   az keyvault secret set --vault-name sqlmitfstatekv-test-06 --name spn-secret --value $(echo $SP | jq -r '.password') > /dev/null
+                   az keyvault secret set --vault-name sqlmitfstatekv-test-06 --name spn-tenant --value $(echo $SP | jq -r '.tenant') > /dev/null
                    '''
             }
         }
